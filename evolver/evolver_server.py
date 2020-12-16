@@ -233,7 +233,7 @@ def clear_broadcast(param=None):
             command_queue.pop(i)
             break
 
-def run_commands():
+async def run_commands():
     global command_queue, serial_connection
     data = {}
     while len(command_queue) > 0:
@@ -341,7 +341,7 @@ async def broadcast(commands_in_queue):
             if config['recurring']:
                 command_queue.append({'param': param, 'value': config['value'], 'type':RECURRING})
     # Always run commands so that IMMEDIATE requests occur. RECURRING requests only happen if no commands in queue
-    broadcast_data['data'] = run_commands()
+    broadcast_data['data'] = await run_commands()
     broadcast_data['config'] = evolver_conf['experimental_params']
     if not commands_in_queue:
         print('Broadcasting data', flush = True)
